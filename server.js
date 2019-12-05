@@ -2,8 +2,7 @@ const http = require("http");
 const url = require("url");
 const fs = require("fs");
 
-http
-  .createServer((request, response) => {
+http.createServer((request, response) => {
     var addr = request.url,
       q = url.parse(addr, true),
       filePath = "";
