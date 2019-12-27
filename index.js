@@ -26,6 +26,11 @@ var auth = require('./auth')(app);
 
 mongoose.connect('mongodb+srv://myFlixDBadmin:test123@cluster0-olxep.mongodb.net/myFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 
+//Get "/"
+app.get('/', function(req, res) {
+  res.send('Welcome to my Movie API')
+});
+
 // Get all users
 app.get('/users', passport.authenticate('jwt', { session: false }), function(req, res) {
 
