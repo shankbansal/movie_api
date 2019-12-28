@@ -14,8 +14,8 @@ const Users = Models.User;
 
 const app = express();
 app.use(morgan('common'));
-app.use(bodyParser.urlencoded({ extended: false }))
-app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
 app.use(cors({
   "Access-Control-Allow-Origin": "*"
@@ -232,5 +232,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
 });
 
 // listen for requests
-app.listen(process.env.PORT || 8080, () =>  console.log('Your app is listening on port '+(process.env.PORT || 3000))
-);
+var port = process.env.PORT || 3000;
+app.listen(port, "0.0.0.0", function() {
+console.log("Listening on Port 3000");
+});
