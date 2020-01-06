@@ -21,8 +21,7 @@ app.use(cors({
   "Access-Control-Allow-Origin": "*"
 }));
 
-var auth = require('./auth')(app);
-
+require('./auth')(app);
 
 mongoose.connect('mongodb+srv://myFlixDBadmin:test123@cluster0-olxep.mongodb.net/myFlix', { useNewUrlParser: true, useUnifiedTopology: true });
 
@@ -45,7 +44,7 @@ app.get('/users', passport.authenticate('jwt', { session: false }), function(req
 });
 
 // Get all movies
-app.get('/movies', passport.authenticate('jwt', { session: false }), function(req, res) {
+app.get('/movies', function(req, res) {
 
   Movies.find()
     .then(function(movies) {
@@ -62,7 +61,7 @@ app.get('/movies/:title', passport.authenticate('jwt', { session: false }), func
 
   Movies.find({ Title: req.params.title })
     .then(function(movies) {
-      res.status(201).json(movies)
+      res.status(201).json(movies);
     })
     .catch(function(err) {
       console.error(err);
@@ -230,6 +229,7 @@ app.delete('/users/:Username', passport.authenticate('jwt', { session: false }),
       res.status(500).send("Error: " + err);
     });
 });
+
 
 // listen for requests
 var port = process.env.PORT || 3000;
