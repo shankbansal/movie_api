@@ -6,7 +6,6 @@ import './movie-card.scss';
 
 export class MovieCard extends React.Component {
 
- 
   render() {
     // This is given to the <MovieCard/> component by the outer world
     // which, in this case, is `MainView`, as `MainView` is what’s
