@@ -1,4 +1,5 @@
 import React from 'react';
+import { Card,Button } from 'react-bootstrap';
 
 export class MovieView extends React.Component {
 
@@ -13,10 +14,30 @@ export class MovieView extends React.Component {
 
     if (!movie) return null;
 
-    return (
-        <div className="movie-view">
-        <div onClick={()=>onClick()}>BACK</div>
-        <img className="movie-poster" src={movie.ImagePath} />
+    return(
+      <div className="col-lg-6 offset-3">
+      <Card className="movie-card">
+          <Card.Img variant="top" src={movie.ImagePath} />
+          <Card.Body>
+            <Card.Title>{movie.Title}</Card.Title>
+            <Card.Text>{movie.Description}</Card.Text>
+            <Card.Text>{movie.Genre.Name}</Card.Text>
+            <Card.Text>{movie.Director.Name}</Card.Text>
+            <Button className="btn-dark row"  onClick={()=>onClick()}>Back</Button>
+          </Card.Body>
+        </Card>
+        </div>
+    )
+
+    /*return (
+      
+        <div className="container">
+          <h1 className="value row col offset-2">{movie.Title}</h1>
+          <div className="row offset-2">
+            <div className="col-6">
+            <br />
+        <img className="fluid" src={movie.ImagePath} />
+        <br />
         <div className="movie-title">
           <span className="label">Title: </span>
           <span className="value">{movie.Title}</span>
@@ -33,10 +54,16 @@ export class MovieView extends React.Component {
         <div className="movie-director">
           <span className="label">Director: </span>
           <span className="value">{movie.Director.Name}</span>
+          <br /><button className="btn-dark col-6" onClick={()=>onClick()}>BACK
+          </button>
+          
+        </div>
+        </div>
         </div>
        </div>
+       
 
 
-    );
+    );*/
   }
 }
