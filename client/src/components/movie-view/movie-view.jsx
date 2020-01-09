@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card,Button } from 'react-bootstrap';
-
+import PropTypes from 'prop-types';
 export class MovieView extends React.Component {
 
   constructor() {
@@ -15,7 +15,7 @@ export class MovieView extends React.Component {
     if (!movie) return null;
 
     return(
-      <div className="col-lg-6 offset-3">
+      <div className="col-lg-6 offset-lg-3">
       <Card className="movie-card">
           <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body>
@@ -66,4 +66,19 @@ export class MovieView extends React.Component {
 
     );*/
   }
+}
+
+
+MovieView.propTypes={
+  movie:PropTypes.shape({
+    Title:PropTypes.string,
+    Description:PropTypes.string,
+    Genre:PropTypes.shape({
+      Name:PropTypes.string
+    }).isRequired,
+    Director:PropTypes.shape({
+      Name:PropTypes.string
+    }).isRequired
+  }).isRequired,
+  onClick:PropTypes.func.isRequired
 }
