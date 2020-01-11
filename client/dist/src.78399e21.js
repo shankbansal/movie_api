@@ -49093,15 +49093,15 @@ function LoginView(props) {
     props.openRegistration();
   };
 
-  var handleSubmit = function handleSubmit() {
+  var handleSubmit = function handleSubmit(e) {
+    e.preventDefault();
+
     _axios.default.post('https://shashank-my-flix.herokuapp.com/login', {
       Username: username,
       Password: password
     }).then(function (response) {
       // Assign the result to the state
-      props.onLoggedIn({
-        user: response.data
-      });
+      props.onLoggedIn(response.data);
     }).catch(function (error) {
       alert('Invalid username or password');
     });
@@ -49229,26 +49229,36 @@ function (_React$Component) {
     }
   }, {
     key: "onLoggedIn",
-    value: function onLoggedIn(user) {
+    value: function onLoggedIn(authData) {
       this.setState({
-        user: user
+        user: authData.user.Username
       });
-    } // One of the "hooks" available in a React Component
-
+      localStorage.setItem('token', authData.token);
+      localStorage.setItem('user', authData.user.Username);
+      this.getMovies(authData.token);
+    }
   }, {
-    key: "componentDidMount",
-    value: function componentDidMount() {
+    key: "getMovies",
+    value: function getMovies(token) {
       var _this2 = this;
 
-      _axios.default.get('https://shashank-my-flix.herokuapp.com/movies').then(function (response) {
-        // Assign the result to the state
+      _axios.default.get('https://shashank-my-flix.herokuapp.com/movies', {
+        headers: {
+          Authorization: "Bearer ".concat(token)
+        }
+      }).then(function (response) {
+        //assign result to state
         _this2.setState({
           movies: response.data
         });
       }).catch(function (error) {
         console.log(error);
       });
-    }
+    } // One of the "hooks" available in a React Component
+
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {}
   }, {
     key: "goBack",
     value: function goBack() {
@@ -49299,8 +49309,8 @@ function (_React$Component) {
         }
       });
       if (!user) return _react.default.createElement(_loginView.LoginView, {
-        onLoggedIn: function onLoggedIn(user) {
-          return _this3.onLoggedIn(user);
+        onLoggedIn: function onLoggedIn(authData) {
+          return _this3.onLoggedIn(authData);
         },
         openRegistration: function openRegistration() {
           return _this3.openRegistration();

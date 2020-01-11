@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import {Button,Form, Jumbotron} from 'react-bootstrap';
+import {Button,Form} from 'react-bootstrap';
 
 import React, { useState } from 'react';
 import axios from 'axios';
@@ -15,12 +15,12 @@ export function LoginView(props) {
     props.openRegistration();
   }
 
-  const handleSubmit = () => {
-
+  const handleSubmit = (e) => {
+    e.preventDefault();
     axios.post('https://shashank-my-flix.herokuapp.com/login',{Username:username,Password:password})
     .then(response => {
       // Assign the result to the state
-     props.onLoggedIn({user:response.data});
+     props.onLoggedIn(response.data);
     })
     .catch(function (error) {
         alert('Invalid username or password');

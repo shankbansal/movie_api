@@ -22,24 +22,34 @@ export class MainView extends React.Component {
         })
     }
 
-    onLoggedIn(user){
+    onLoggedIn(authData){
         this.setState({
-            user
+            user: authData.user.Username
+        });
+
+        localStorage.setItem('token', authData.token);
+        localStorage.setItem('user', authData.user.Username);
+        this.getMovies(authData.token);
+    }
+
+    getMovies(token) {
+      axios.get('https://shashank-my-flix.herokuapp.com/movies', {
+        headers: { Authorization: `Bearer ${token}`}
+      })
+      .then(response => {
+        //assign result to state
+        this.setState({
+          movies: response.data
         })
+      })
+      .catch(function(error){
+        console.log(error);
+      });
     }
 
     // One of the "hooks" available in a React Component
     componentDidMount() {
-      axios.get('https://shashank-my-flix.herokuapp.com/movies')
-        .then(response => {
-          // Assign the result to the state
-          this.setState({
-            movies: response.data
-          });
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      
     }
   
     goBack(){
@@ -61,13 +71,14 @@ export class MainView extends React.Component {
         isRegistration:false
       })
     }
+
     render() {
       // If the state isn't initialized, this will throw on runtime
       // before the data is initially loaded
       const { movies,selectedMovie,user,isRegistration } = this.state;
   
       if(isRegistration) return <RegisterView onRegistered={user=>this.onRegistered(user)} openLogin={()=>this.openLogin()}/>
-     if(!user) return <LoginView onLoggedIn={user=>this.onLoggedIn(user)} openRegistration={()=>this.openRegistration()}/>
+     if(!user) return <LoginView onLoggedIn={(authData)=>this.onLoggedIn(authData)} openRegistration={()=>this.openRegistration()}/>
 
       // Before the movies have been loaded
       if (!movies) return <div className="main-view"/>;
