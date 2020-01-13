@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {Button,Form} from 'react-bootstrap';
 import "./registration-view.scss"
 import React, { useState } from 'react';

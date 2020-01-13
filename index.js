@@ -214,6 +214,28 @@ app.post('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { sess
     })
 });
 
+// Remove a movie from user's favorites
+app.delete('/users/:Username/Movies/:MovieID', passport.authenticate('jwt', { session: false }), async function(req, res) {
+
+  const userObj = await Users.findOne({ Username: req.params.Username })
+  const index = userObj.FavoriteMovies.indexOf(req.params.MovieID)
+
+  if (index == -1) return res.status(403).send("Movie already deleted from favourite list");
+
+  Users.findOneAndUpdate({ Username: req.params.Username }, {
+    $pull: { FavoriteMovies: req.params.MovieID }
+  },
+    { new: true }, // This line makes sure that the updated document is returned
+    function(err, updatedUser) {
+      if (err) {
+        console.error(err);
+        res.status(500).send("Error: " + err);
+      } else {
+        res.json(updatedUser)
+      }
+    })
+});
+
 // Delete a user by username
 app.delete('/users/:Username', passport.authenticate('jwt', { session: false }), function(req, res) {
   Users.findOneAndRemove({ Username: req.params.Username })

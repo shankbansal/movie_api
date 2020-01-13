@@ -1,8 +1,8 @@
-import React from 'react';
-import { Card,Button } from 'react-bootstrap';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 export class MovieView extends React.Component {
-
   constructor() {
     super();
 
@@ -10,24 +10,36 @@ export class MovieView extends React.Component {
   }
 
   render() {
-    const { movie, onClick } = this.props;
+    const { movie } = this.props;
 
     if (!movie) return null;
 
-    return(
+    return (
       <div className="col-lg-6 offset-lg-3">
-      <Card className="movie-card">
+        <Card className="movie-card">
           <Card.Img variant="top" src={movie.ImagePath} />
           <Card.Body>
             <Card.Title>{movie.Title}</Card.Title>
             <Card.Text>{movie.Description}</Card.Text>
-            <Card.Text>{movie.Genre.Name}</Card.Text>
-            <Card.Text>{movie.Director.Name}</Card.Text>
-            <Button className="btn-dark row"  onClick={()=>onClick()}>Back</Button>
+            <Card.Text>
+              <Link to={`/genres/${movie.Genre.Name}`}>
+                {movie.Genre.Name}
+              </Link>
+            </Card.Text>
+
+            <Card.Text>
+              <Link to={`/directors/${movie.Director.Name}`}>
+                {movie.Director.Name}
+              </Link>
+            </Card.Text>
+
+            <Link to="/">
+              <Button variant="dark">Back</Button>
+            </Link>
           </Card.Body>
         </Card>
-        </div>
-    )
+      </div>
+    );
 
     /*return (
       
@@ -68,17 +80,15 @@ export class MovieView extends React.Component {
   }
 }
 
-
-MovieView.propTypes={
-  movie:PropTypes.shape({
-    Title:PropTypes.string,
-    Description:PropTypes.string,
-    Genre:PropTypes.shape({
-      Name:PropTypes.string
+MovieView.propTypes = {
+  movie: PropTypes.shape({
+    Title: PropTypes.string,
+    Description: PropTypes.string,
+    Genre: PropTypes.shape({
+      Name: PropTypes.string
     }).isRequired,
-    Director:PropTypes.shape({
-      Name:PropTypes.string
+    Director: PropTypes.shape({
+      Name: PropTypes.string
     }).isRequired
-  }).isRequired,
-  onClick:PropTypes.func.isRequired
-}
+  }).isRequired
+};

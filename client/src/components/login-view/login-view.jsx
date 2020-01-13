@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import {Button,Form} from 'react-bootstrap';
 
 import React, { useState } from 'react';
