@@ -52107,9 +52107,8 @@ function LoginView(props) {
     className: "col-lg-6 offset-lg-3"
   }, _react.default.createElement("h1", null, "Login"), _react.default.createElement(_reactBootstrap.Form.Group, {
     controlId: "formBasicEmail"
-  }, _react.default.createElement(_reactBootstrap.Form.Label, null, "Email address "), _react.default.createElement(_reactBootstrap.Form.Control, {
-    type: "email",
-    placeholder: "Enter email",
+  }, _react.default.createElement(_reactBootstrap.Form.Label, null, "Username "), _react.default.createElement(_reactBootstrap.Form.Control, {
+    placeholder: "Username",
     value: username,
     onChange: function onChange(e) {
       return setUsername(e.target.value);
@@ -52788,7 +52787,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56206" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65368" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
