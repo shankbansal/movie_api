@@ -52431,7 +52431,7 @@ function ProfileView(props) {
       return m._id == id;
     }).Title);
   })), _react.default.createElement("div", {
-    className: "col-12"
+    className: "col-12 d-flex mt-4"
   }, _react.default.createElement(_reactBootstrap.Button, {
     variant: "danger",
     className: "col-3",
@@ -52787,7 +52787,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65368" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51388" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

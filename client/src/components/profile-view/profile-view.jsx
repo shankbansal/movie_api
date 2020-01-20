@@ -161,7 +161,7 @@ export function ProfileView(props) {
             </Button>
           ))}
         </div>
-        <div className="col-12">
+        <div className="col-12 d-flex mt-4">
           <Button
             variant="danger"
             className="col-3"
