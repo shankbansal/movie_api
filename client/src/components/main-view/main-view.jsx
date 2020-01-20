@@ -10,6 +10,7 @@ import { ProfileView } from "../profile-view/profile-view";
 
 import { RegisterView } from "../registration-view/registration-view";
 import { Button } from "react-bootstrap";
+import "./main-view.scss";
 export class MainView extends React.Component {
   constructor() {
     super();
@@ -66,7 +67,9 @@ export class MainView extends React.Component {
     this.setState({ isRegistration: null });
   };
 
-  onRegistered = user => {
+  onRegistered = ({ user, token }) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    localStorage.setItem("token", token);
     this.setState({
       user: user,
       isRegistration: false
@@ -114,6 +117,7 @@ export class MainView extends React.Component {
           >
             Log Out
           </Button>
+
           <Route
             exact
             path="/"
@@ -137,6 +141,7 @@ export class MainView extends React.Component {
               />
             )}
           />
+
           <Route
             path="/directors/:name"
             render={({ match }) => {
@@ -150,15 +155,18 @@ export class MainView extends React.Component {
               );
             }}
           />
-          <Link to="/profile">
-            <Button variant="outline-warning" className="row-1 col-12">
-              User
-            </Button>
-          </Link>
           <Route
             path="/profile"
-            render={()=><ProfileView user={user}/>}
+            render={() => <ProfileView user={user} movies={movies} />}
           />
+          <Button
+            href="/profile"
+            type="button"
+            variant="outline-warning"
+            className="col-12 row-1"
+          >
+            User
+          </Button>
         </div>
       </Router>
     );
@@ -166,7 +174,7 @@ export class MainView extends React.Component {
        <div className="row p-3">
          <Button variant='outline-dark' className="col-12 row-1" onClick={deauth => this.onLogout(deauth)}>Log Out</Button>
           {selectedMovie
-            ?
+            /*?
             <MovieView movie={selectedMovie}  onClick={()=>this.goBack()}/>
                       : movies.map(movie => (
               <MovieCard key={movie._id} movie={movie} onClick={movie => this.onMovieClick(movie)}/>

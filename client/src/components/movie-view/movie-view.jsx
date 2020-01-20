@@ -33,9 +33,9 @@ export class MovieView extends React.Component {
               </Link>
             </Card.Text>
 
-            <Link to="/">
-              <Button variant="dark">Back</Button>
-            </Link>
+            
+              <Button href="/" variant="dark">Back</Button>
+            
           </Card.Body>
         </Card>
       </div>

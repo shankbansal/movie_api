@@ -1,17 +1,64 @@
 import React, { useState } from "react";
 import { Button, Form } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import axios from "axios";
+import "./profile-view.scss";
 
-export function ProfileView({user}) {
-  const [username, setUsername] = useState(user.Username);
-  const [email, setEmail] = useState(user.Email);
-  const [birthday, setBirthday] = useState(user.Birthday);
+export function ProfileView(props) {
+  const history = useHistory();
+  const [movies, setMovies] = useState(props.movies);
+  const [username, setUsername] = useState(props.user.Username);
+  const [email, setEmail] = useState(props.user.Email);
+  const [birthday, setBirthday] = useState(props.user.Birthday);
   const [password, setPassword] = useState("");
+  const [user, setUser] = useState(props.user);
 
-  function removeFavMovie(movie){
+  function removeUser() {
+    axios
+      .delete("https://shashank-my-flix.herokuapp.com/users/" + username, {
+        headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+      })
+      .then(response => {
+        alert("Account Removed");
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.reload('/')
+      })
+      .catch(e => {
+        console.log(e);
+        alert("Error occurred");
+      });
+  }
+
+  function removeFavMovie(movieId) {
     //Movie remove code
-    axios.delete("https://shashank-my-flix.herokuapp.com/user/" + username+"")
+    axios
+      .delete(
+        "https://shashank-my-flix.herokuapp.com/users/" +
+          username +
+          "/Movies/" +
+          movieId,
+        {
+          headers: { Authorization: "Bearer " + localStorage.getItem("token") }
+        }
+      )
+      .then(response => {
+        alert("Movie removed from favourite list");
+        let storedUser = localStorage.getItem("user");
+        storedUser = JSON.parse(storedUser);
+        let favMovies = [];
+        storedUser.FavoriteMovies.map(mId => {
+          if (mId !== movieId) {
+            favMovies.push(mId);
+          }
+        });
+        storedUser.FavoriteMovies = favMovies;
+        localStorage.setItem("user", JSON.stringify(storedUser));
+        setUser(storedUser);
+      })
+      .catch(e => {
+        alert("Movie not in favourite list");
+      });
   }
 
   function update() {
@@ -30,12 +77,12 @@ export function ProfileView({user}) {
         }
       )
       .then(response => {
-        let user = localStorage.getItem("user");
-        user = JSON.parse(user);
-        user.Username = username;
-        user.Email = email;
-        user.Birthday = birthday;
-        localStorage.setItem("user", JSON.stringify(user));
+        let storedUser = localStorage.getItem("user");
+        storedUser = JSON.parse(storedUser);
+        storedUser.Username = username;
+        storedUser.Email = email;
+        storedUser.Birthday = birthday;
+        localStorage.setItem("user", JSON.stringify(storedUser));
         // Assign the result to the state
         alert("User details updated!");
       })
@@ -45,8 +92,8 @@ export function ProfileView({user}) {
   }
 
   return (
-    <div className="User-wrapper">
-      <Form className="col-lg-6 offset-lg-3">
+    <div className="col">
+      <Form className="col-lg-6 offset-lg-3 p-3">
         <h1>User Details</h1>
         <Form.Group>
           <Form.Label>Username</Form.Label>
@@ -74,7 +121,7 @@ export function ProfileView({user}) {
           </Form.Text>
         </Form.Group>
 
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group>
           <Form.Label>Birthday</Form.Label>
           <Form.Control
             type="text"
@@ -83,7 +130,7 @@ export function ProfileView({user}) {
             onChange={e => setBirthday(e.target.value)}
           />
         </Form.Group>
-        <Form.Group controlId="formBasicPassword">
+        <Form.Group>
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"
@@ -101,6 +148,27 @@ export function ProfileView({user}) {
               Back
             </Button>
           </Link>
+        </div>
+        <div className="col-12 d-flex justify-content-between mt-4">
+          {user.FavoriteMovies.map(id => (
+            <Button
+              variant="outline-danger"
+              className="col-3"
+              key={id}
+              onClick={() => removeFavMovie(id)}
+            >
+              {movies.find(m => m._id == id).Title}
+            </Button>
+          ))}
+        </div>
+        <div className="col-12">
+          <Button
+            variant="danger"
+            className="col-3"
+            onClick={() => removeUser()}
+          >
+            Remove Account
+          </Button>
         </div>
       </Form>
     </div>
