@@ -1,10 +1,33 @@
-export const SET_MOVIES = "SET_MOVIES";
-export const SET_FILTER = "SET_FILTER";
+const SET_MOVIES = 'SET_MOVIES';
+const SET_FILTER = 'SET_FILTER';
+const SET_USER = 'SET_USER';
+const SET_REGISTRATION = 'SET_REGISTRATION';
 
-export function setMovies(value) {
+function setMovies(value) {
   return { type: SET_MOVIES, value };
 }
 
-export function setFilter(value) {
+function setRegistration(value) {
+  return { type: SET_REGISTRATION, value };
+}
+
+function setFilter(value) {
   return { type: SET_FILTER, value };
+}
+
+function setUser(value) {
+  return { type: SET_USER, value };
+}
+
+
+export {
+  SET_MOVIES,
+  SET_FILTER,
+  SET_USER,
+  SET_REGISTRATION,
+
+  setMovies,
+  setRegistration,
+  setFilter,
+  setUser
 }

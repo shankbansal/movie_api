@@ -1,17 +1,21 @@
 import React, { useState } from "react";
+import { connect } from "react-redux";
+
 import { Button, Form } from "react-bootstrap";
-import { Link, useHistory } from "react-router-dom";
+import { setUser, setMovies } from "../../actions/actions";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./profile-view.scss";
 
-export function ProfileView(props) {
-  const history = useHistory();
-  const [movies, setMovies] = useState(props.movies);
+function ProfileView(props) {
   const [username, setUsername] = useState(props.user.Username);
   const [email, setEmail] = useState(props.user.Email);
   const [birthday, setBirthday] = useState(props.user.Birthday);
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(props.user);
+
+  console.log('-=-=-=-=-=-=-=');
+  console.log(props);
+  console.log('-=-=-=-=-=-=-=');
 
   function removeUser() {
     axios
@@ -22,7 +26,7 @@ export function ProfileView(props) {
         alert("Account Removed");
         localStorage.removeItem("token");
         localStorage.removeItem("user");
-        window.location.reload('/')
+        window.open("/");
       })
       .catch(e => {
         console.log(e);
@@ -54,7 +58,7 @@ export function ProfileView(props) {
         });
         storedUser.FavoriteMovies = favMovies;
         localStorage.setItem("user", JSON.stringify(storedUser));
-        setUser(storedUser);
+        props.setUser(storedUser);
       })
       .catch(e => {
         alert("Movie not in favourite list");
@@ -150,14 +154,14 @@ export function ProfileView(props) {
           </Link>
         </div>
         <div className="col-12 d-flex justify-content-between mt-4">
-          {user.FavoriteMovies.map(id => (
+          {props.user.FavoriteMovies.map(id => (
             <Button
               variant="outline-danger"
               className="col-3"
               key={id}
               onClick={() => removeFavMovie(id)}
             >
-              {movies.find(m => m._id == id).Title}
+              {props.movies.find(m => m._id == id).Title}
             </Button>
           ))}
         </div>
@@ -174,3 +178,11 @@ export function ProfileView(props) {
     </div>
   );
 }
+let mapStateToProps = state => {
+  return {
+    user: state.user,
+    movies: state.movies
+  };
+};
+
+export default connect(mapStateToProps, { setUser, setMovies })(ProfileView);

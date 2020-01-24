@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 // Import statement to indicate that you need to bundle `./index.scss`
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
-import { MainView } from './components/main-view/main-view';
+import MainView from './components/main-view/main-view';
 import moviesApp from './reducers/reducers';
 
 import './index.scss';

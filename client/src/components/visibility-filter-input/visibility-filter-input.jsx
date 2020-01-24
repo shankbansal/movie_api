@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import Form from 'react-bootstrap/Form';
@@ -7,10 +6,10 @@ import Form from 'react-bootstrap/Form';
 import { setFilter } from '../../actions/actions';
 
 function VisibilityFilterInput(props) {
-  return <Form.Control
+  return <Form.Control className="m-3"
     onChange={e => props.setFilter(e.target.value)}
     value={props.visibilityFilter}
-    placeholder="filter"
+    placeholder="Movie Filter"
   />;
 }
 
